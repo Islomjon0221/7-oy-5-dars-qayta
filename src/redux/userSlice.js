@@ -18,23 +18,23 @@ export const userSlice = createSlice({
     },
     Logins: (state, actions) => {
       let copied = JSON.parse(JSON.stringify(state.value));
-      console.log(copied);
       copied = copied.map((data) => {
+        console.log(21, data.name);
         if (
           data.name == actions.payload.name &&
           data.password == actions.payload.password &&
           data.email == actions.payload.email
         ) {
-          return {
+          return {login: {
             name: data.name,
             age: data.age,
             email: data.email,
-          };
+          }}
         } else {
           return data;
         }
       });
-      console.log(copied);
+      console.log(37, copied);
       return state.value = copied;
     },
 

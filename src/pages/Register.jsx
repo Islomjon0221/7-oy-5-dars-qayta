@@ -135,7 +135,7 @@ function Register() {
 
                     <button className={`mb-[24px] py-[20px] text-[16px] flex leading-[19.29px] ${Mode == "light" ? "text-[#797979] border-[#E9E9E9]" : "text-[#D8D8D8] border-[#222222]"} border items-center border-1 font-semibold bg-gradient-to-r rounded-[10px] transition hover:opacity-75 duration-300`}><img className="ml-[116px] mr-[16px]" src={Google} alt="Google icon" /> Sign Up with Google</button>
 
-                    <h3 className={`text-[15.94px] leading-[19.29px] text-center cursor-pointer transition-all mb-[30px] ${Mode == "light" ? "text-black duration-300" : "text-[#D8D8D8] duration-300"}`}>or login with SSO</h3>
+                    <h3 onClick={() => navigate("/login")} className={`text-[15.94px] leading-[19.29px] text-center cursor-pointer transition-all mb-[30px] ${Mode == "light" ? "text-black duration-300" : "text-[#D8D8D8] duration-300"}`}>or login with SSO</h3>
                 </form>
             </div>
         </div>

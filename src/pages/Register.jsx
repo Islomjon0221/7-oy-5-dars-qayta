@@ -1,5 +1,5 @@
-import { useDispatch } from "react-redux"
-import { userBuild } from "../redux/userSlice"
+import { useDispatch, useSelector } from "react-redux"
+import { register } from "../redux/usersSlice"
 import lock from "../assets/lock.svg"
 import email from "../assets/sms.svg"
 import user from "../assets/user.svg"
@@ -10,12 +10,15 @@ import { useNavigate } from "react-router-dom"
 
 function Register() {
     const [Mode, setMode] = useState("light")
+    const users = useSelector(state => state.user)
     const nameRef = useRef(null)
     const ageRef = useRef(null)
     const emailRef = useRef(null)
     const RePasswordRef = useRef(null)
     const passwordRef = useRef(null)
     const navigate = useNavigate();
+
+    console.log(21, users.length);
 
     useEffect(() => {
         if (localStorage.getItem("mode")) {
@@ -24,37 +27,37 @@ function Register() {
     }, [])
 
     function validate() {
-        if(!nameRef.current.value){
+        if (!nameRef.current.value) {
             alert("Name is null")
             return false
         }
 
-        if(ageRef.current.value == 0){
+        if (ageRef.current.value == 0) {
             alert("Age is null")
             return false
         }
 
-        if(ageRef.current.value < 5 || ageRef.current.value > 150) {
+        if (ageRef.current.value < 5 || ageRef.current.value > 150) {
             alert("Age should be less than 5 not more than 150")
             return false
         }
 
-        if(!emailRef.current.value){
+        if (!emailRef.current.value) {
             alert("Email is null")
             return false
         }
 
-        if(!passwordRef.current.value){
+        if (!passwordRef.current.value) {
             alert("Password is null")
             return false
         }
 
-        if(!RePasswordRef.current.value){
+        if (!RePasswordRef.current.value) {
             alert("RePassword is null")
             return false
         }
 
-        if(passwordRef.current.value != RePasswordRef.current.value) {
+        if (passwordRef.current.value != RePasswordRef.current.value) {
             alert("Password does not match")
             return false
         }
@@ -78,23 +81,44 @@ function Register() {
         e.preventDefault()
         const isValid = validate()
         if (isValid) {
-            const userData = {
-                name: nameRef.current.value,
-                age: ageRef.current.value,
-                email: emailRef.current.value,
-                password: passwordRef.current.value,
+            if (users.length > 0) {
+                let user = users.find((el) => {
+                    return el.email == emailRef.current.value
+                })
+                if (user) {
+                    alert("Bunday email mavjud")
+                } else {
+                    dispatch(register({
+                        name: nameRef.current.value,
+                        age: ageRef.current.value,
+                        email: emailRef.current.value,
+                        password: passwordRef.current.value,
+                    }))
+                    console.log(95);
+                    navigate("/login")
+                    nameRef.current.value = null
+                    ageRef.current.value = null
+                    emailRef.current.value = null
+                    passwordRef.current.value = null
+                    RePasswordRef.current.value = null
+                }
+            } else {
+                const userData = {
+                    name: nameRef.current.value,
+                    age: ageRef.current.value,
+                    email: emailRef.current.value,
+                    password: passwordRef.current.value,
+                }
+    
+                console.log(108, userData);
+                dispatch(register(userData))
+                navigate("/login")
+                nameRef.current.value = null
+                ageRef.current.value = null
+                emailRef.current.value = null
+                passwordRef.current.value = null
+                RePasswordRef.current.value = null
             }
-
-            console.log(userData);
-
-            dispatch(userBuild(userData))
-            navigate("/Login")
-
-            nameRef.current.value = null
-            ageRef.current.value = null
-            emailRef.current.value = null
-            passwordRef.current.value = null
-            RePasswordRef.current.value = null
 
         }
     }
